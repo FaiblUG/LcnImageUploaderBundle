@@ -1,0 +1,33 @@
+{
+  "name" : "locaine/lcn-image-uploader-bundle",
+  "description" : "Easy ajax image file uploads for Symfony2",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Jonas Fischer-Maeck",
+    "email" : "info@jonasfischer.net"
+  }],
+  "keywords" : [
+    "Symfony2",
+    "Ajax",
+    "File Upload",
+    "Image Upload"
+  ],
+  "license" : [
+    "MIT"
+  ],
+  "require" : {
+  },
+  "autoload" : {
+    "psr-0" : {
+      "Lcn\\ImageUploaderBundle" : ""
+    }
+  },
+  "target-dir" : "Lcn/ImageUploaderBundle",
+  "repositories" : [{
+  }],
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "1.0.0-dev"
+    }
+  }
+}
