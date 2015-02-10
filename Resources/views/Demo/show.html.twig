@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LcnFileUploaderBundle Demo and Documentation</title>
+    <link rel="stylesheet" href="{{ asset('bundles/lcnfileuploader/dist/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/lcnfileuploader/dist/theme.css') }}">
+</head>
+<body>
+
+<h1>Demo usage of LcnImageUploaderBundle</h1>
+
+<h2>Show Image uploads of temporary entity {{ entity.id }}</h2>
+
+<ul>
+    {% for image in lcn_get_gallery_images(entity, galleryName, 'standard') %}
+        <li><img data-lcn-image-gallery-toggle="{{ loop.index0 }}" src="{{ image }}"></li>
+    {% endfor %}
+</ul>
+
+<a href="{{ path('lcn_image_uploader_demo_edit', { 'entityId': entity.id }) }}">Edit image uploads of temporary entity</a></h2>
+
+</body>
+</html>
+

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LcnImageUploaderBundle Demo and Documentation</title>
+</head>
+<body>
+
+<h1>Demo usage of LcnImageUploaderBundle</h1>
+
+<h2>Edit Uploads of temporary entity {{ entity.id }}</h2>
+
+{{ form_start(form, { 'attr': { 'id': 'lcn-image-uploader-demo' } }) }}
+
+    {{ form_errors(form) }}
+
+    {% include 'LcnFileUploaderBundle:Theme:lcnFileUploaderWidget.html.twig' with {
+        'uploadUrl': uploadUrl,
+        'uploadFolderName': lcn_get_upload_folder_name(entity, galleryName),
+        'formSelector': '#lcn-image-uploader-demo'
+    } %}
+
+    {{ form_rest(form) }}
+
+    <input type="submit" value="save">
+</form>
+
+<h2><a href="{{ path('lcn_image_uploader_demo_create') }}">Create new temporary entity</a></h2>
+
+
+{{ lcn_include_stylesheets() }}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+{{ lcn_include_javascripts() }}
+</body>
+</html>
+

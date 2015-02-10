@@ -1,0 +1,52 @@
+parameters:
+  lcn.image_uploader.allowed_extensions:
+    - gif #image/gif
+    - png #image/png
+    - jpg #image/jpeg
+    - jpeg #image/jpeg
+
+  lcn.image_uploader.galleries:
+    # define your own named galleries here
+    # The following "demo" gallery is just an example.
+    demo: #this is the gallery name
+      max_number_of_files: 5
+      sizes:
+        # required: "thumbnail"
+        thumbnail:
+          folder: thumbnail
+          max_width: 200
+          max_height: 150
+          crop: true
+        # optional: "original" - define original image size if you want to restrict the maximum image dimensions:
+        original:
+          folder: original
+          max_width: 2000
+          max_height: 1000
+          crop: false
+        # optional: define any additional image size you need.
+        # For more advanced image resizing options you might also want to use specialized
+        # bundles for that, e.g. https://github.com/liip/LiipImagineBundle.
+        standard:
+          folder: standard
+          max_width: 600
+          max_height: 400
+          crop: true
+
+
+services:
+
+    lcn.image_uploader:
+        class: Lcn\ImageUploaderBundle\Service\ImageUploader
+        arguments: [@lcn.file_uploader, %lcn.image_uploader.galleries%, %lcn.image_uploader.allowed_extensions%]
+
+    lcn.image_uploader.twig_extension:
+        class: Lcn\ImageUploaderBundle\Twig\ImageUploaderExtension
+        arguments: [@lcn.image_uploader]
+        tags:
+            - { name: twig.extension }
+
+    lcn.image_uploader.image_gallery.remove_listener:
+            class: Lcn\ImageUploaderBundle\Listener\ImageGalleryEntityEventListener
+            arguments: [@lcn.image_uploader]
+            tags:
+                - { name: doctrine.event_listener, event: preRemove }

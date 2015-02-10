@@ -1,0 +1,15 @@
+lcn_image_uploader_demo_create:
+    path:     /lcn-image-uploader/demo
+    defaults: { _controller: LcnImageUploaderBundle:Demo:create }
+
+lcn_image_uploader_demo_edit:
+    path:     /lcn-image-uploader/demo/{entityId}/edit
+    defaults: { _controller: LcnImageUploaderBundle:Demo:edit }
+
+lcn_image_uploader_demo_show:
+    path:     /lcn-image-uploader/demo/{entityId}
+    defaults: { _controller: LcnImageUploaderBundle:Demo:show }
+
+lcn_image_uploader_demo_handle_file_upload:
+    path:     /lcn-image-uploader/demo/file-upload/{entityId}
+    defaults: { _controller: LcnImageUploaderBundle:Demo:handleFileUpload }
