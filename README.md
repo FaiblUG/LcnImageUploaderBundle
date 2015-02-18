@@ -245,6 +245,7 @@ Now include the upload widget anywhere on your page:
     {% include 'LcnFileUploaderBundle:Theme:lcnFileUploaderWidget.html.twig' with {
         'uploadUrl': uploadUrl,
         'uploadFolderName': lcn_get_upload_folder_name(entity, galleryName),
+        'maxNumberOfFiles': lcn_image_uploader_get_max_number_of_images(galleryName),
         'formSelector': '#lcn-image-uploader-demo'
     } %}
 ```
@@ -259,6 +260,7 @@ Full example:
     {% include 'LcnFileUploaderBundle:Theme:lcnFileUploaderWidget.html.twig' with {
         'uploadUrl': uploadUrl,
         'uploadFolderName': lcn_get_upload_folder_name(entity, galleryName),
+        'maxNumberOfFiles': lcn_image_uploader_get_max_number_of_images(galleryName),
         'formSelector': '#lcn-image-uploader-demo'
     } %}
 
