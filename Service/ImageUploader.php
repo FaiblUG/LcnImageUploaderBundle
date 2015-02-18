@@ -60,12 +60,28 @@ class ImageUploader
         return $result;
     }
 
+    /**
+     * Get Image url for given parameters.
+     * This method does not require any file system calls and is therefore
+     * quite fast. YOu prefer this method to getImages if you already know the filename
+     *
+     * @param ImageGallery $entity
+     * @param $galleryName
+     * @param $size
+     * @param $filename
+     *
+     * @return string
+     */
     public function getImage(ImageGallery $entity, $galleryName, $size, $filename) {
         $uploadPathSegment = $this->getUploadFolderName($entity, $galleryName);
         $sizesConfig = $this->getSizeConfig($galleryName, $size);
         $webPathPrefix = $this->fileUploader->getWebBasePath().'/'.$uploadPathSegment.'/'.$sizesConfig['folder'];
 
         return $webPathPrefix.'/'.$filename;
+    }
+
+    public function getMaxNumberOfImages($galleryName) {
+        return $this->getGalleryConfigValue($galleryName, 'max_number_of_files', 1);
     }
 
     public function getGallery(ImageGallery $entity, $galleryName) {
@@ -98,7 +114,7 @@ class ImageUploader
         $this->fileUploader->handleFileUpload(array(
             'folder' => $this->getUploadFolderName($entity, $galleryName),
             'sizes' => $this->getSizesConfig($galleryName),
-            'max_number_of_files' => $this->getMaxNumberOfFilesConfig($galleryName),
+            'max_number_of_files' => $this->getMaxNumberOfImages($galleryName),
             'allowed_extensions' => $this->allowedExtensions,
         ));
     }
@@ -137,10 +153,6 @@ class ImageUploader
         }
 
         return $sizesConfig[$size];
-    }
-
-    public function getMaxNumberOfFilesConfig($galleryName) {
-        return $this->getGalleryConfigValue($galleryName, 'max_number_of_files', 1);
     }
 
 }

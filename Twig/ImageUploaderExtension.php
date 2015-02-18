@@ -22,6 +22,7 @@ class ImageUploaderExtension extends \Twig_Extension
             new \Twig_SimpleFunction('lcn_get_image', array($this, 'getImage')),
             new \Twig_SimpleFunction('lcn_get_gallery_images', array($this, 'getGalleryImages')),
             new \Twig_SimpleFunction('lcn_get_first_gallery_image', array($this, 'getFirstGalleryImage')),
+            new \Twig_SimpleFunction('lcn_image_uploader_get_max_number_of_images', array($this, 'getMaxNumberOfImages')),
         );
     }
 
@@ -43,6 +44,11 @@ class ImageUploaderExtension extends \Twig_Extension
     public function getFirstGalleryImage(ImageGallery $entity, $galleryName, $size)
     {
         return $this->imageUploader->getFirstImage($entity, $galleryName, $size);
+    }
+
+    public function getMaxNumberOfImages($galleryName)
+    {
+        return $this->imageUploader->getMaxNumberOfImages($galleryName);
     }
 
     public function getName()
