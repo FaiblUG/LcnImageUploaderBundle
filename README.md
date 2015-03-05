@@ -115,7 +115,10 @@ class Demo implements \Lcn\ImageUploaderBundle\Entity\ImageGallery {
      * @return String
      */
     public function getImageGalleryUploadPath() {
-        return 'demo-gallery/'.$this->getId();
+        $id = $this->getId();
+        //include two characters of hash to avoid file system / operating system restrictions
+        //with too many files/directories within a single directory.
+        return 'demo-gallery/' . substr(md5($id), 0, 2) . '/' . $id;
     }
 }
 ```
@@ -196,7 +199,7 @@ class DemoController extends Controller
     public function handleFileUploadAction(Request $request, $entityId)
     {
         $entity = new Demo($entityId); //in a real world scenario you would retrieve the entity from a repository.
-                $galleryName = 'demo'; //the galleryName has to match a defined gallery in parameter "lcn.image_uploader.galleries"
+        $galleryName = 'demo'; //the galleryName has to match a defined gallery in parameter "lcn.image_uploader.galleries"
 
         $this->get('lcn.image_uploader')->handleFileUpload($entity, $galleryName);
     }
