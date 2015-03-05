@@ -60,6 +60,12 @@ class ImageUploader
         return $result;
     }
 
+    public function getImageFilenames(ImageGallery $entity, $galleryName, $limit = null) {
+        $uploadPath = $this->getUploadFolderName($entity, $galleryName);
+
+        return $this->fileUploader->getFilenames($uploadPath);
+    }
+
     /**
      * Get Image url for given parameters.
      * This method does not require any file system calls and is therefore
@@ -73,32 +79,63 @@ class ImageUploader
      * @return string
      */
     public function getImage(ImageGallery $entity, $galleryName, $size, $filename) {
+        return $this->getWebPathPrefix($entity, $galleryName, $size).'/'.$filename;
+    }
+
+    private function getWebPathPrefix(ImageGallery $entity, $galleryName, $size) {
         $uploadPathSegment = $this->getUploadFolderName($entity, $galleryName);
         $sizesConfig = $this->getSizeConfig($galleryName, $size);
-        $webPathPrefix = $this->fileUploader->getWebBasePath().'/'.$uploadPathSegment.'/'.$sizesConfig['folder'];
 
-        return $webPathPrefix.'/'.$filename;
+        return $this->fileUploader->getWebBasePath().'/'.$uploadPathSegment.'/'.$sizesConfig['folder'];
+    }
+
+    private function getFilePathPrefix(ImageGallery $entity, $galleryName, $size) {
+        $uploadPathSegment = $this->getUploadFolderName($entity, $galleryName);
+        $sizesConfig = $this->getSizeConfig($galleryName, $size);
+
+        return $this->fileUploader->getFileBasePath().'/'.$uploadPathSegment.'/'.$sizesConfig['folder'];
     }
 
     public function getMaxNumberOfImages($galleryName) {
         return $this->getGalleryConfigValue($galleryName, 'max_number_of_files', 1);
     }
 
-    public function getGallery(ImageGallery $entity, $galleryName) {
-        $images = $this->getImages($entity, $galleryName, 'large');
+    public function getGallery(ImageGallery $entity, $galleryName, $size = 'large') {
         $result = array();
 
-        $sizeConfig = $this->getSizeConfig($galleryName, 'large');
+        $imageFilenames = $this->getImageFilenames($entity, $galleryName);
 
-        foreach ($images as $image) {
+        $sizeConfig = $this->getSizeConfig($galleryName, $size);
+
+        $webPathPrefix = $this->getWebPathPrefix($entity, $galleryName, $size);
+        $filePathPrefix = $this->getFilePathPrefix($entity, $galleryName, $size);
+
+        foreach ($imageFilenames as $imageFilename) {
+            $size = $this->getImageSize($filePathPrefix.'/'.$imageFilename);
             $result[] = array(
-                'src' => $image,
-                'w' => $sizeConfig['max_width'],
-                'h' => $sizeConfig['max_height'],
+              'src' => $webPathPrefix.'/'.$imageFilename,
+              'w' => $size['width'],
+              'h' => $size['height'],
+              'max_w' => $sizeConfig['max_width'],
+              'max_h' => $sizeConfig['max_height'],
             );
         }
 
         return $result;
+    }
+
+    private function getImageSize($filepath) {
+        if (file_exists($filepath)) {
+            $imagesize = getimagesize($filepath);
+
+            return array(
+              'width' => $imagesize[0],
+              'height' => $imagesize[1]
+            );
+        }
+        else {
+            return array('width' => 0, 'height' => 0);
+        }
     }
 
     public function syncFromTemp(ImageGallery $entity, $galleryName) {
@@ -112,10 +149,10 @@ class ImageUploader
     public function handleFileUpload(ImageGallery $entity, $galleryName)
     {
         $this->fileUploader->handleFileUpload(array(
-            'folder' => $this->getUploadFolderName($entity, $galleryName),
-            'sizes' => $this->getSizesConfig($galleryName),
-            'max_number_of_files' => $this->getMaxNumberOfImages($galleryName),
-            'allowed_extensions' => $this->allowedExtensions,
+          'folder' => $this->getUploadFolderName($entity, $galleryName),
+          'sizes' => $this->getSizesConfig($galleryName),
+          'max_number_of_files' => $this->getMaxNumberOfImages($galleryName),
+          'allowed_extensions' => $this->allowedExtensions,
         ));
     }
 
