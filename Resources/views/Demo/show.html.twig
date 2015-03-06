@@ -12,7 +12,7 @@
 
 <ul>
     {% for image in lcn_get_gallery_images(entity, galleryName, 'standard') %}
-        <li><img data-lcn-image-gallery-toggle="{{ loop.index0 }}" src="{{ image }}"></li>
+        <li><img src="{{ image }}"></li>
     {% endfor %}
 </ul>
 
