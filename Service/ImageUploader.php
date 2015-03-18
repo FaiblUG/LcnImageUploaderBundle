@@ -34,6 +34,20 @@ class ImageUploader
         return $this;
     }
 
+    public function countImages(ImageGallery $entity, $galleryName)
+    {
+        $uploadPath = $this->getUploadFolderName($entity, $galleryName);
+
+        return count($this->fileUploader->getFilenames($uploadPath));
+    }
+
+    public function countTempImages(ImageGallery $entity, $galleryName)
+    {
+        $uploadPath = $this->getUploadFolderName($entity, $galleryName);
+
+        return count($this->fileUploader->getTempFiles($uploadPath));
+    }
+
     public function getFirstImage(ImageGallery $entity, $galleryName, $size) {
         $images = $this->getImages($entity, $galleryName, $size, 1);
         if (!empty($images)) {
