@@ -114,6 +114,10 @@ class ImageUploader
         return $this->getGalleryConfigValue($galleryName, 'max_number_of_files', 1);
     }
 
+    public function getMaxFileSize($galleryName) {
+        return $this->getGalleryConfigValue($galleryName, 'max_file_size', null);
+    }
+
     public function getGallery(ImageGallery $entity, $galleryName, $size = 'large') {
         $result = array();
 
@@ -166,6 +170,7 @@ class ImageUploader
           'folder' => $this->getUploadFolderName($entity, $galleryName),
           'sizes' => $this->getSizesConfig($galleryName),
           'max_number_of_files' => $this->getMaxNumberOfImages($galleryName),
+          'max_file_size' => $this->getMaxFileSize($galleryName),
           'allowed_extensions' => $this->allowedExtensions,
         ));
     }

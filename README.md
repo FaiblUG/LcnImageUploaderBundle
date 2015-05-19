@@ -291,6 +291,7 @@ The image sizes are defined per gallery in lcn.image_uploader.galleries paramete
     # The following "demo" gallery is just an example.
     demo: #this is the gallery name
       max_number_of_files: 5
+      max_file_size: null #max file size in bytes. if set to null or omitted, system settings (e.g. php.ini) will be used
       sizes:
         # required: "thumbnail"
         thumbnail:
