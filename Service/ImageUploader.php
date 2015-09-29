@@ -137,11 +137,11 @@ class ImageUploader
 
         foreach ($imageFilenames as $imageFilename) {
             $imageUrl = $this->getImage($entity, $galleryName, $size, $imageFilename);
-            $size = $this->getImageSize($imageUrl);
+            $actualImageSize = $this->getImageSize($imageUrl);
             $result[] = array(
               'src' => $imageUrl,
-              'w' => $size['width'],
-              'h' => $size['height'],
+              'w' => $actualImageSize['width'],
+              'h' => $actualImageSize['height'],
               'max_w' => $sizeConfig['max_width'],
               'max_h' => $sizeConfig['max_height'],
             );
@@ -151,16 +151,16 @@ class ImageUploader
     }
 
     private function getImageSize($filepath) {
-        if (file_exists($filepath)) {
-            $imagesize = getimagesize($filepath);
+        $imagesize = @getimagesize($filepath);
 
+        if ($imagesize) {
             return array(
               'width' => $imagesize[0],
               'height' => $imagesize[1]
             );
         }
         else {
-            return array('width' => 0, 'height' => 0);
+            return array('width' => null, 'height' => null);
         }
     }
 
