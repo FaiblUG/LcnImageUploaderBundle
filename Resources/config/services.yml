@@ -21,12 +21,8 @@ parameters:
           crop: true
           proxy:
             enabled: %lcn_file_uploader.image_proxy_enabled%
-            url: https://my-source.imgix.com~imageUrl~
-            parameters:
-              w: ~max_width~
-              h: ~max_height~
-              fit: crop
-              crop: faces
+            url: %lcn_file_uploader.image_proxy_url%
+            parameters: %lcn_file_uploader.image_proxy_parameters%
 
         # required: "original" - used to store "original" versions of files (resamples images if needed)
         original:
@@ -36,7 +32,7 @@ parameters:
           crop: false
           proxy:
             enabled: %lcn_file_uploader.image_proxy_enabled%
-            url: https://my-source.imgix.com~imageUrl~
+            url: %lcn_file_uploader.image_proxy_url%
             parameters:
               w: ~max_width~
               h: ~max_height~
@@ -52,12 +48,8 @@ parameters:
           crop: true
           proxy:
             enabled: %lcn_file_uploader.image_proxy_enabled%
-            url: https://my-source.imgix.com~imageUrl~
-            parameters:
-              w: 600
-              h: 400
-              fit: crop
-              crop: faces
+            url: https://my-source.imgix.net~imageUrl~
+            parameters: %lcn_file_uploader.image_proxy_parameters%
 
 
 services:

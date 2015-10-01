@@ -113,13 +113,6 @@ class ImageUploader
         return $this->getFileUploader($galleryName)->getWebBasePath().'/'.$uploadPathSegment;
     }
 
-    private function getFilePathPrefix(ImageGallery $entity, $galleryName, $size) {
-        $uploadPathSegment = $this->getUploadFolderName($entity, $galleryName);
-        $sizesConfig = $this->getSizeConfig($galleryName, $size);
-
-        return $this->getFileUploader($galleryName)->getFileBasePath().'/'.$uploadPathSegment.'/'.$sizesConfig['folder'];
-    }
-
     public function getMaxNumberOfImages($galleryName) {
         return $this->getGalleryConfigValue($galleryName, 'max_number_of_files', 1);
     }
@@ -137,31 +130,14 @@ class ImageUploader
 
         foreach ($imageFilenames as $imageFilename) {
             $imageUrl = $this->getImage($entity, $galleryName, $size, $imageFilename);
-            $actualImageSize = $this->getImageSize($imageUrl);
             $result[] = array(
               'src' => $imageUrl,
-              'w' => $actualImageSize['width'],
-              'h' => $actualImageSize['height'],
-              'max_w' => $sizeConfig['max_width'],
-              'max_h' => $sizeConfig['max_height'],
+              'w' => $sizeConfig['max_width'],
+              'h' => $sizeConfig['max_height'],
             );
         }
 
         return $result;
-    }
-
-    private function getImageSize($filepath) {
-        $imagesize = @getimagesize($filepath);
-
-        if ($imagesize) {
-            return array(
-              'width' => $imagesize[0],
-              'height' => $imagesize[1]
-            );
-        }
-        else {
-            return array('width' => null, 'height' => null);
-        }
     }
 
     public function syncFromTemp(ImageGallery $entity, $galleryName) {
